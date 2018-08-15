@@ -832,7 +832,13 @@ static NSDate *_vibrateDeadline;
 
 - (void)onNetStatusChanged:(NSNotification *)notification {
     NSString *netStatus = [self getConnectStatus];
-    [self.webViewEngine callbackWithFunctionKeyPath:@"uexDevice.onNetStatusChanged" arguments:ACArgsPack(netStatus)];
+    [self.webViewEngine callbackWithFunctionKeyPath:@"uexDevice.onNetStatusChanged"
+                                          arguments:ACArgsPack(netStatus)
+                                         completion:^(JSValue * _Nullable returnValue) {
+                                             if (returnValue) {
+                                                 ACLogDebug(@"回调成功!");
+                                             }
+                                         }];
 }
 
 - (void)stopsNetStatusListener:(NSMutableArray *)inArguments {
